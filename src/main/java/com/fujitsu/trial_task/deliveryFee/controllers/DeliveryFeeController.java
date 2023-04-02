@@ -12,6 +12,8 @@ import com.fujitsu.trial_task.deliveryFee.models.DeliveryFee;
 import com.fujitsu.trial_task.weather.entities.WeatherData;
 import com.fujitsu.trial_task.weather.repositories.WeatherDataRepository;
 
+import io.swagger.v3.oas.annotations.Operation;
+
 @RestController
 public class DeliveryFeeController {
 
@@ -21,18 +23,19 @@ public class DeliveryFeeController {
 		this.repository = repository;
 	}
 
+	@Operation(summary = "Calculates delivery fee based on location weather and vehicle type.")
 	@GetMapping("/deliveryFee")
 	public DeliveryFee deliverFee(
 			@RequestParam(required = true) String location,
 			@RequestParam(required = true) String vehicleType) {
 
-		List<WeatherData> weatherDatas = repository.findByStationNameOrderByTimestampDesc(location.toLowerCase());
+		List<WeatherData> newestWeatherData = repository.findFirstByStationNameOrderByTimestampDesc(location.toLowerCase());
 
-		if (weatherDatas.isEmpty()){
+		if (newestWeatherData.isEmpty()){
 			throw new DeliveryDataNotFoundException();
 		}
 
-		WeatherData weatherData = weatherDatas.get(0);
+		WeatherData weatherData = newestWeatherData.get(0);
 		Double RBF = DeliveryFeeService.calculateRBF(location, vehicleType);
 		Double ATEF = DeliveryFeeService.calculateATEF(vehicleType, weatherData.getAirTemp());
 		Double WSEF = DeliveryFeeService.calculateWSEF(vehicleType, weatherData.getWindSpeed());
