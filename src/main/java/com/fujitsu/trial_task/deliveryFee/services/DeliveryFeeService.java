@@ -8,14 +8,14 @@ import com.fujitsu.trial_task.deliveryFee.models.DeliveryFee;
 @Service
 public class DeliveryFeeService {
 
-    public static Double calculateRBF(String location, String vehicleType){
+    public static Double calculateRBF(String location, String vehicleType) {
         switch (location.toLowerCase()) {
             case "tallinn":
                 switch (vehicleType.toLowerCase()) {
                     case "car":
                         return 4.0;
                     case "scooter":
-                        return 3.5;                  
+                        return 3.5;
                     case "bike":
                         return 3.0;
                 }
@@ -25,7 +25,7 @@ public class DeliveryFeeService {
                     case "car":
                         return 3.5;
                     case "scooter":
-                        return 3.0;                 
+                        return 3.0;
                     case "bike":
                         return 2.5;
                 }
@@ -35,7 +35,7 @@ public class DeliveryFeeService {
                     case "car":
                         return 3.0;
                     case "scooter":
-                        return 2.5;                   
+                        return 2.5;
                     case "bike":
                         return 2.0;
                 }
@@ -43,24 +43,24 @@ public class DeliveryFeeService {
         }
         return 0.0;
     }
-    
-    public static Double calculateATEF(String vehicleType, double airTemp){
+
+    public static Double calculateATEF(String vehicleType, double airTemp) {
         vehicleType = vehicleType.toLowerCase();
-        if(vehicleType.equals("scooter") || vehicleType.equals("bike")){
-            if (airTemp < -10){
+        if (vehicleType.equals("scooter") || vehicleType.equals("bike")) {
+            if (airTemp < -10) {
                 return 1.0;
             }
-            if(airTemp >= -10 && airTemp <= 0){
+            if (airTemp >= -10 && airTemp <= 0) {
                 return 0.5;
             }
         }
         return 0.0;
     }
 
-    public static Double calculateWSEF(String vehicleType, double windSpeed){
+    public static Double calculateWSEF(String vehicleType, double windSpeed) {
         vehicleType = vehicleType.toLowerCase();
-        if(vehicleType.equals("bike")){
-            if (windSpeed >= 10 & windSpeed <=20){
+        if (vehicleType.equals("bike")) {
+            if (windSpeed >= 10 & windSpeed <= 20) {
                 return 0.5;
             }
             if (windSpeed > 20) {
@@ -70,17 +70,17 @@ public class DeliveryFeeService {
         return 0.0;
     }
 
-    public static Double calculateWPEF(String vehicleType, String weather){
+    public static Double calculateWPEF(String vehicleType, String weather) {
         vehicleType = vehicleType.toLowerCase();
         weather = weather.toLowerCase();
-        if(vehicleType.equals("scooter") || vehicleType.equals("bike")){
-            if (weather.contains("snow") || weather.contains("sleet")){
+        if (vehicleType.equals("scooter") || vehicleType.equals("bike")) {
+            if (weather.contains("snow") || weather.contains("sleet")) {
                 return 1.0;
             }
-            if(weather.contains("rain")){
+            if (weather.contains("rain")) {
                 return 0.5;
             }
-            if (weather.contains("glaze") || weather.contains("hail") || weather.contains("thunder")){
+            if (weather.contains("glaze") || weather.contains("hail") || weather.contains("thunder")) {
                 return null;
             }
         }
@@ -91,7 +91,7 @@ public class DeliveryFeeService {
         if (WSEF == null) {
             throw new DeliveryForbiddenException();
         }
-        if (WPEF == null){
+        if (WPEF == null) {
             throw new DeliveryForbiddenException();
         }
         return new DeliveryFee(RBF + ATEF + WSEF + WPEF);

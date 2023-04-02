@@ -6,9 +6,9 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.fujitsu.trial_task.deliveryFee.services.DeliveryFeeService;
 import com.fujitsu.trial_task.deliveryFee.exceptions.DeliveryDataNotFoundException;
 import com.fujitsu.trial_task.deliveryFee.models.DeliveryFee;
+import com.fujitsu.trial_task.deliveryFee.services.DeliveryFeeService;
 import com.fujitsu.trial_task.weather.entities.WeatherData;
 import com.fujitsu.trial_task.weather.repositories.WeatherDataRepository;
 
@@ -29,9 +29,10 @@ public class DeliveryFeeController {
 			@RequestParam(required = true) String location,
 			@RequestParam(required = true) String vehicleType) {
 
-		List<WeatherData> newestWeatherData = repository.findFirstByStationNameOrderByTimestampDesc(location.toLowerCase());
+		List<WeatherData> newestWeatherData = repository
+				.findFirstByStationNameOrderByTimestampDesc(location.toLowerCase());
 
-		if (newestWeatherData.isEmpty()){
+		if (newestWeatherData.isEmpty()) {
 			throw new DeliveryDataNotFoundException();
 		}
 

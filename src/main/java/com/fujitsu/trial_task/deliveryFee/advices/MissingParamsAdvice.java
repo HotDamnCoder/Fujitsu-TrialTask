@@ -11,13 +11,13 @@ import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 
 @ApiResponses(value = {
-    @ApiResponse(responseCode = "400", description = "Required parameters missing") })
+        @ApiResponse(responseCode = "400", description = "Required parameters missing") })
 @ControllerAdvice
 public class MissingParamsAdvice {
     @ResponseBody
     @ExceptionHandler(MissingServletRequestParameterException.class)
     @ResponseStatus(HttpStatus.BAD_REQUEST)
-    String deliveryForbiddenHandler(MissingServletRequestParameterException ex){
+    String deliveryForbiddenHandler(MissingServletRequestParameterException ex) {
         return ex.getMessage();
     }
 }

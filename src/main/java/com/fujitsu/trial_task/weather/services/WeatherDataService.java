@@ -52,7 +52,7 @@ public class WeatherDataService {
                     name = REAL_LOCATIONS_OF_STATIONS.get(MONITORED_STATIONS.indexOf(name))
                             .toLowerCase();
                 }
-                
+
                 int wmo = station.getInt("wmocode");
                 double airTemp = station.getDouble("airtemperature");
                 double windSpeed = station.getDouble("windspeed");
