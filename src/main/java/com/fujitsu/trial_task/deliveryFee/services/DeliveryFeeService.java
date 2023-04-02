@@ -1,8 +1,12 @@
-package com.fujitsu.trial_task.deliveryFee;
+package com.fujitsu.trial_task.deliveryFee.services;
 
+import org.springframework.stereotype.Service;
 
+import com.fujitsu.trial_task.deliveryFee.exceptions.DeliveryForbiddenException;
+import com.fujitsu.trial_task.deliveryFee.models.DeliveryFee;
 
-class DeliveryFeeService {
+@Service
+public class DeliveryFeeService {
 
     public static Double calculateRBF(String location, String vehicleType){
         switch (location.toLowerCase()) {
