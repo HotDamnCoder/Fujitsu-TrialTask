@@ -42,20 +42,23 @@ public class WeatherDataService {
 
             for (int i = 0; i < stations.length(); i++) {
                 JSONObject station = stations.getJSONObject(i);
-                String stationName = station.getString("name").toLowerCase();
-                if (MONITORED_STATIONS.contains(stationName)) {
-                    if (MONITORED_STATIONS.indexOf(stationName) < REAL_LOCATIONS_OF_STATIONS.size()) {
-                        stationName = REAL_LOCATIONS_OF_STATIONS.get(MONITORED_STATIONS.indexOf(stationName))
-                                .toLowerCase();
-                    }
-                    int stationWMO = station.getInt("wmocode");
-                    double airTemp = station.getDouble("airtemperature");
-                    double windSpeed = station.getDouble("windspeed");
-                    String phenomenon = station.getString("phenomenon");
-                    WeatherData weather_data = new WeatherData(stationName, stationWMO, airTemp, windSpeed, phenomenon,
-                            timestamp);
-                    repository.save(weather_data);
+                String name = station.getString("name").toLowerCase();
+
+                if (!MONITORED_STATIONS.contains(name)) {
+                    continue;
                 }
+
+                if (MONITORED_STATIONS.indexOf(name) < REAL_LOCATIONS_OF_STATIONS.size()) {
+                    name = REAL_LOCATIONS_OF_STATIONS.get(MONITORED_STATIONS.indexOf(name))
+                            .toLowerCase();
+                }
+                
+                int wmo = station.getInt("wmocode");
+                double airTemp = station.getDouble("airtemperature");
+                double windSpeed = station.getDouble("windspeed");
+                String phenomenon = station.getString("phenomenon");
+                WeatherData weatherData = new WeatherData(name, wmo, airTemp, windSpeed, phenomenon, timestamp);
+                repository.save(weatherData);
             }
         } catch (JSONException e) {
             throw new DeliveryDataMalformedException(e.getMessage());
